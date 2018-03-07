@@ -2,20 +2,27 @@ body{
     margin-left:100px;
     margin-right:100px;
     font-weight: 200;
-  font-size: 30px;
+  font-size: 18px;
+    font-family: 'Open Sans', sans-serif;
 }
 
 #footer{
-    background-color: #C0C5CE;
-    left: 20px;
-    font-size: 25px;
+    background-color: #f9f9f9;
+    left: 14px;
+    font-size: 14px;
+    font-family: 'Open Sans', sans-serif;
 }
+
 
 .firstcolumn {
-    width: 700px
+    width: 200px
 }
 .secondcolumn{
-    width: 700px
+    width: 500px
 }
-
-
+.thirdcolumn {
+    width: 500px
+}
+.lastcolumn{
+    width: 200px
+}
