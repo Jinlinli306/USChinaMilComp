@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html;charset=utf-8"/ >
+		<title>Smoothed D3.js Radar Chart</title>
+
+		<!-- Google fonts -->
+		<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300' rel='stylesheet' type='text/css'>
+		<link href='https://fonts.googleapis.com/css?family=Raleway' rel='stylesheet' type='text/css'>
+
+		<!-- D3.js -->
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js" charset="utf-8"></script>
+		
+		<style>
+			body {
+				font-family: 'Open Sans', sans-serif;
+				font-size: 11px;
+				font-weight: 300;
+				fill: #242424;
+				text-align: center;
+				text-shadow: 0 1px 0 #fff, 1px 0 0 #fff, -1px 0 0 #fff, 0 -1px 0 #fff;
+				cursor: default;
+			}
+			
+			.legend {
+				font-family: 'Raleway', sans-serif;
+				fill: #333333;
+			}
+			
+			.tooltip {
+				fill: #333333;
+			}
+            
+          
+		</style>
+	
+	</head>
+	<body>
+        <div class="container">
+            <div class="chart1"></div>
+            <div class="chart2"></div>
+            <div class="radarChart"></div>
+        </div>
+		<script src="radarChart.js"></script>	
+		<script>
+      
+      /* Radar chart design created by Nadieh Bremer - VisualCinnamon.com */
+      
+			////////////////////////////////////////////////////////////// 
+			//////////////////////// Set-Up ////////////////////////////// 
+			////////////////////////////////////////////////////////////// 
+
+			var margin = {top: 20, right: 20, bottom: 20, left: 20},
+				width = Math.min(1000, window.innerWidth - 10) - margin.left - margin.right,
+				height = Math.min(700, window.innerHeight - margin.top - margin.bottom - 20);
+					
+			////////////////////////////////////////////////////////////// 
+			////////////////////////// Data ////////////////////////////// 
+			////////////////////////////////////////////////////////////// 
+
+			var data = [
+					  [//USA
+						{axis:"Manpower",value:0.20},
+						{axis:"Air Power",value:0.99},
+						{axis:"Army Strength",value:0.29},
+						{axis:"Navy Strength",value:0.42},
+						{axis:"Natural Resources",value:0.12},
+						{axis:"Logistics",value:0.8},
+						{axis:"Fianace",value:0.99},
+						{axis:"Geography",value:0.57}			
+					  ],[//China
+						{axis:"Manpower",value:0.99},
+						{axis:"Air Power",value:0.21},
+						{axis:"Army Strength",value:0.29},
+						{axis:"Navy Strength",value:0.73},
+						{axis:"Natural Resources",value:0.08},
+						{axis:"Logistics",value:0.5},
+						{axis:"Fianace",value:0.28},
+						{axis:"Geography",value:0.56}
+					  ]
+					];
+			////////////////////////////////////////////////////////////// 
+			//////////////////// Draw the Chart ////////////////////////// 
+			////////////////////////////////////////////////////////////// 
+
+			var color = d3.scale.ordinal()
+				.range(["#319ef7","#CC333F"]);
+				
+			var radarChartOptions = {
+			  w: width,
+			  h: height,
+			  margin: margin,
+			  maxValue: 0.5,
+			  levels: 5,
+			  roundStrokes: true,
+			  color: color
+			};
+			//Call function to draw the Radar chart
+			RadarChart(".radarChart", data, radarChartOptions);
+            d3.selectAll(".legend").style("font-size", "16px");
+            
+            d3.selectAll(".legend").filter(function(d){
+                return d == "Manpower"})
+//            .on("mouseover", function(d) {
+//                d3.select(this)
+//                    .style("font-size", "20px")
+//                    .style("fill", "red");})                  
+//                .on("mouseout", function(d) {
+//                d3.select(this)
+//                    .style("font-size", "16px")
+//                    .style("fill", "#242424");})
+                .on("click", function(d) { resize(d); }) ;
+    
+            function resize(){
+                 //bar();
+//                var radarChartOptions = {
+//                    w: 200,
+//                    h: 200,
+//                    margin: margin,
+//                    maxValue: 0.5,
+//                    levels: 5,
+//                    roundStrokes: true,
+//                    color: color};
+//                RadarChart(".radarChart", data, radarChartOptions);
+//                 zoom = d3.behavior.zoom()
+//      .translate([0,0])
+//      .scale(1)
+//      .scaleExtent([.5, 1])
+//      .on("zoom", zoomed);
+//                
+//                
+//                function zoomed() {
+//    d3.selectAll(".gelement")
+//                    .attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");                  }
+//                
+//                var scale = 0.5;
+   d3.selectAll(".gelement").transition().duration(2000)
+                .attr("transform","translate(800, 240)scale(0.5)");
+                
+                
+//     d3.selectAll(".gelement").transition().duration(2000)
+//        .call(zoom
+//              .translate([1000 -200, 240])
+//              .scale(scale).event);
+//    bar();
+ 
+                
+//                d3.selectAll(".gelement")
+//                .transition()
+//                .attr("transform", "translate(" + (width/2 + margin.left +20) +  "," + (height/2 + margin.top) + ")")
+//                .scale(0.5).event;
+               
+                    //.attr("align","right")
+                
+//                d3.selectAll(".legend").style("font-size", "11px")
+//                .on("mouseout", function(d) {
+//                d3.select(this)
+//                    .transition()
+//                    .style("font-size", "11px")
+//                    .style("fill", "#242424");});
+               
+            
+            }
+            
+            
+ function bar(){           
+            
+            var margin = {top: 20, right: 20, bottom: 70, left: 40},
+    width = 400 - margin.left - margin.right,
+    height = 300 - margin.top - margin.bottom;
+
+// Parse the date / time
+var	parseDate = d3.time.format("%Y-%m").parse;
+
+var x = d3.scale.ordinal().rangeRoundBands([0, width], .05);
+
+var y = d3.scale.linear().range([height, 0]);
+
+var xAxis = d3.svg.axis()
+    .scale(x)
+    .orient("bottom")
+    .tickFormat(d3.time.format("%Y-%m"));
+
+var yAxis = d3.svg.axis()
+    .scale(y)
+    .orient("left")
+    .ticks(10);
+
+var svg = d3.select(".radarChart").append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+  .append("g")
+    .attr("transform", 
+          "translate(" + margin.left + "," + margin.top + ")");
+
+d3.csv("bar-data.csv", function(error, data) {
+
+    data.forEach(function(d) {
+        d.date = parseDate(d.date);
+        d.value = +d.value;
+    });
+	
+  x.domain(data.map(function(d) { return d.date; }));
+  y.domain([0, d3.max(data, function(d) { return d.value; })]);
+
+  svg.append("g")
+      .attr("class", "x axis")
+      .attr("transform", "translate(0," + height + ")")
+      .call(xAxis)
+    .selectAll("text")
+      .style("text-anchor", "end")
+      .attr("dx", "-.8em")
+      .attr("dy", "-.55em")
+      .attr("transform", "rotate(-90)" );
+
+  svg.append("g")
+      .attr("class", "y axis")
+      .call(yAxis)
+    .append("text")
+      .attr("transform", "rotate(-90)")
+      .attr("y", 6)
+      .attr("dy", ".71em")
+      .style("text-anchor", "end")
+      .text("Value ($)");
+
+  svg.selectAll("bar")
+      .data(data)
+    .enter().append("rect")
+      .style("fill", "steelblue")
+      .attr("x", function(d) { return x(d.date); })
+      .attr("width", x.rangeBand())
+      .attr("y", function(d) { return y(d.value); })
+      .attr("height", function(d) { return height - y(d.value); });
+
+});
+ }
+		</script>
+		  <div>
+            <input name="button" 
+                   type="button" 
+                   value="test" 
+                   onclick="window.location.reload()" />
+
+        </div>
+	</body>
+</html>

@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+  <meta charset="utf-8">
+  <style>
+
+  .axis path, .axis--x line {
+    display: none;
+  }
+
+  input {
+    position: absolute;
+    left: 30px;
+    top: 40px;
+    width: 220px;
+  }
+      .tooltip {
+  position: absolute;
+  text-align: left;
+  width: 170px;
+  height: 85px;
+  padding: 3px 0px 0px 7px;
+  font: 14px sans-serif;
+  background: lightsteelblue;
+  border: 0px;
+  border-radius: 8px;
+  pointer-events: none;
+
+}
+
+  </style>  
+  <svg width="800" height="600"></svg>
+  <script src="//d3js.org/d3.v4.min.js"></script>
+  <input type="range" min="0" max="100" step="25" value="0">
+  <script>
+
+  var svg = d3.select("svg"),
+      margin = {top: 20, right: 10, bottom: 20, left: 30},
+      width = +svg.attr("width") - margin.left - margin.right,
+      height = +svg.attr("height") - margin.top - margin.bottom,
+      g = svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+  var y = d3.scaleBand()
+      .rangeRound([0, height])
+      .padding(0.3)
+      .align(0.7);
+
+  var x = d3.scaleLinear()
+      .rangeRound([0, width]);
+
+  var z = d3.scaleOrdinal(d3.schemeCategory10);
+
+  var stack = d3.stack();
+
+  d3.csv("data.csv", function(error, data) {
+    if (error) throw error;
+
+    var data_nest = d3.nest()
+                      .key(function(d){
+                          return d.Slider
+                      })
+                      .entries(data);
+
+    data = data_nest.filter(function(d){ return d.key == 0})[0].values;
+    
+    var cat = ["first","second"];
+
+    y.domain(data.map(function(d) { return d.x; }));
+    x.domain([0, 100]).nice();
+    z.domain(cat); 
+      
+      var tooltip = d3.select("body").append("div")
+    .attr("class", "tooltip")
+    .style("opacity", 0);
+  console.log(data.x)
+    g.selectAll(".serie")
+      .data(stack.keys(cat)(data))
+      .enter().append("g")
+        .attr("class", "serie")
+        .attr("fill", function(d) {return z(d.key); })
+      .selectAll("rect")
+      .data(function(d) { return d; })
+      .enter().append("rect")
+        .attr("y", function(d) { return y(d.data.x); })
+        .attr("x", function(d) { return x(d[0]); })
+        .attr("width", function(d) { return x(d[1]) - x(d[0]); })
+        .attr("height", y.bandwidth())
+      .on("mouseover", function(d) {
+          tooltip.transition()
+               .duration(200)
+               .style("opacity", .9);
+          tooltip.html("first " + d.data.first + "</br> second " + d.data.second)
+               .style("left", (d3.event.pageX + 5) + "px")
+               .style("top", (d3.event.pageY - 28) + "px");
+      })
+      .on("mouseout", function(d) {
+          tooltip.transition()
+               .duration(500)
+               .style("opacity", 0);
+      });
+
+    g.append("g")
+        .attr("class", "axis axis--y")
+        .attr("transform", "translate(0, 0)")
+        .style("font", "18px sans-serif")
+        .call(d3.axisLeft(y));
+
+    g.append("g")
+        .attr("class", "axis axis--x")
+        .attr("transform","translate(0," + height + ")")
+        .call(d3.axisBottom(x).ticks(10, "s"))
+      .append("text")
+        .attr("y", 2)
+        .attr("x", x(x.ticks(10).pop()))
+        .attr("dy", "0.35em")
+        .attr("text-anchor", "start")
+        .attr("fill", "#000")
+        .attr("transform", "translate("+ (-width) +",-10)");
+
+    d3.select("input")
+      .on("input", changed)
+      .on("change", changed);
+
+    function changed() {
+      var value = this.value;
+
+      g.selectAll(".serie")
+        .data(stack.keys(cat)(data_nest.filter(function(d){return +d.key == value})[0].values))
+        .selectAll("rect")
+        .data(function(d) { return d; })
+        .transition()
+        .duration(500) 
+        .delay(function(d,i){return i*100})     
+        .attr("width", function(d) { return x(d[1]) - x(d[0]); })
+        .attr("y", function(d) { return y(d.data.x); })
+        .attr("x", function(d) { return x(d[0]); });
+        
+//        d3.select(".tooltip").html
+  }
+
+  });
+
+
+  </script>
