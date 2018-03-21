@@ -7,7 +7,6 @@ body{
 }
 
 #footer{
-   width: 1200px;
     font-size: 15px;
     font-family: 'Open Sans', sans-serif;
       padding:0px 10px 10px 10px; 
@@ -60,7 +59,7 @@ input {
   height: 30px;
   padding: 2px;
   font-family: 'Open Sans', sans-serif;
-  font-size: 12px;
+  font-size: 14px;
   border: 0px;
   border-radius: 8px;
   pointer-events: none;
@@ -73,11 +72,11 @@ input {
 .tooltip2 {
   position: absolute;
   text-align: center;
-  width: 80px;
-  height: 45px;
+  width: 87px;
+  height: 47px;
   padding: 2px;
   font-family: 'Open Sans', sans-serif;
-  font-size: 12px;
+  font-size: 14px;
   border: 0px;
   border-radius: 8px;
   pointer-events: none;
@@ -86,6 +85,40 @@ input {
     color: #333;
     z-index: 10;
 
+}
+
+.tooltipFin {
+  position: absolute;
+  text-align: center;
+  width: 65px;
+  height: 30px;
+  padding: 2px;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 14px;
+  border: 0px;
+  border-radius: 8px;
+  pointer-events: none;
+    background: #eee;
+    box-shadow: 0 0 5px #999999;                                
+    color: #333;
+    z-index: 10;
+}
+
+.tooltipFin2 {
+  position: absolute;
+  text-align: center;
+  width: 165px;
+  height: 60px;
+  padding: 2px;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 14px;
+  border: 0px;
+  border-radius: 8px;
+  pointer-events: none;
+    background: #eee;
+    box-shadow: 0 0 5px #999999;                                
+    color: #333;
+    z-index: 10;
 }
     
 .axis path, .axis--x line {

@@ -7,7 +7,7 @@
 
 			var margin = {top: 20, right: 20, bottom: 20, left: 20},
 				width = Math.min(1200, window.innerWidth - 10) - margin.left - margin.right,
-				height = Math.min(700, window.innerHeight - margin.top - margin.bottom - 20);
+				height = Math.min(600, window.innerHeight - margin.top - margin.bottom - 20);
 					
 			////////////////////////////////////////////////////////////// 
 			////////////////////////// Data ////////////////////////////// 
@@ -101,7 +101,7 @@ d3.selectAll(".legend").filter(function(d){
                               finbar(d);});
 
 
-d3.selectAll("#sliderPOP").style("display","none");
+d3.selectAll(".sliderbar").style("display","none");
 
 
 function noteshow(text){
@@ -147,6 +147,7 @@ function wrap(text, width) {
     function finbar(){
         d3.select(".chartzone").remove();
         d3.selectAll(".sliderbar").style("display","none");
+    d3.selectAll("#sliderFin").style("display","block");
         var svg = d3.select("svg"),
     margin = {top:60, right: 20, bottom: 60, left: 40},
     width = 650 - margin.left - margin.right,
@@ -275,8 +276,8 @@ var title = chart1.append("g")
 			.style("font-size", "18px")
 			.text("Defense budget accounts for GDP");
 
-var margin = {top: 20, right: 20, bottom: 20, left: 100},
-    width = 750 - margin.left - margin.right,
+var margin = {top: 20, right: 20, bottom: 20, left: 40},
+    width = 650 - margin.left - margin.right,
     height = 200 - margin.top - margin.bottom;
     
 var chart2 = d3.select(".chartzone").append("g").attr("class","chart2")
@@ -358,7 +359,7 @@ var z2 = d3.scaleOrdinal()
 	  .attr("transform", "translate("+ (-width) +",-10)");   	// Newline
     
 
-    d3.select("input")
+    d3.select("#sliderFin")
         .on("change", function () {on_count_change(this); on_kind_change(this);})
         .on("input", function () {on_count_change(this); on_kind_change(this);});
 
@@ -394,7 +395,7 @@ var linearScale = d3.scaleLinear()
 	.domain([0, 4])
 	.range([0, 600]);
 
-var timeline = d3.select('.chartzone').append('g').attr("class","timeline").attr("transform", "translate(25,400)");
+var timeline = d3.select('.chartzone').append('g').attr("class","timeline").attr("transform", "translate(25,570)");
       
 	d3.select(".timeline").selectAll('text')
 	.data(myData)
@@ -641,7 +642,7 @@ var z2 = d3.scaleOrdinal()
 	  .attr("transform", "translate("+ (-width) +",-10)");   	// Newline
     
 
-    d3.select("input")
+    d3.select("#sliderPOP")
         .on("change", function () {on_count_change(this); on_kind_change(this);})
         .on("input", function () {on_count_change(this); on_kind_change(this);});
 
