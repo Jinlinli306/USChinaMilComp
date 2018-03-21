@@ -3,7 +3,7 @@
     
 body {
     font-family: 'Open Sans', sans-serif;
-    font-size: 14px;
+    font-size: 11px;
     font-weight: 300;}
 
 .axis .domain {
@@ -11,15 +11,15 @@ body {
 }
 input {
     position: absolute;
-    left: 30px;
+    left: 162px;
     top: 550px;
-    width: 620px;
+    width: 535px;
   }
   
-.tooltipPOP {
+.tooltip {
   position: absolute;
   text-align: center;
-  width: 65px;
+  width: 85px;
   height: 30px;
   padding: 2px;
   font-family: 'Open Sans', sans-serif;
@@ -37,7 +37,7 @@ input {
   position: absolute;
   text-align: center;
   width: 80px;
-  height: 45px;
+  height: 85px;
   padding: 2px;
   font-family: 'Open Sans', sans-serif;
   font-size: 12px;
@@ -58,14 +58,14 @@ input {
 
 
 </style>
-<svg width="650" height="800" ></svg>
+<svg width="750" height="600" ></svg>
 <script src="https://d3js.org/d3.v4.min.js"></script>
 <input type="range" min="0" max="100" step="25" value="0">
 <script>
 
 var svg = d3.select("svg"),
-    margin = {top:60, right: 20, bottom: 60, left: 40},
-    width = 650 - margin.left - margin.right,
+    margin = {top:60, right: 20, bottom: 60, left: 100},
+    width = 750 - margin.left - margin.right,
     height = 250 - margin.top - margin.bottom;
 
 //define scales
@@ -75,14 +75,15 @@ var x = d3.scaleLinear().rangeRound([0, width]),
     .range(["#319ef7","#CC333F"]);
     
 var stack = d3.stack();
+    var chartzone = d3.select("svg").append("g").attr("class","chartzone") ; 
     
-var chart1 = d3.select("svg")
+var chart1 = d3.select(".chartzone")
 .append("g")
 .attr("class","chart1")
 .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-var tooltipPOP = d3.select("body").append("div")
-    .attr("class", "tooltipPOP")
+var tooltip = d3.select("body").append("div")
+    .attr("class", "tooltip")
     .style("opacity", 0);
     
 var tooltip2 = d3.select("body").append("div")
@@ -94,7 +95,7 @@ var on_kind_change;
     
 
 	//load data
-d3.csv("totalPersonnel.csv",function (error, data) {
+d3.csv("budgetRatio.csv",function (error, data) {
 		if(error) throw error;
         var data_nest = d3.nest()
                       .key(function(d){
@@ -104,10 +105,10 @@ d3.csv("totalPersonnel.csv",function (error, data) {
 
     data = data_nest.filter(function(d){ return d.key == 0})[0].values;
     
-    var cat = ["number"];
+    var cat = ["ratio"];
 
 	//define domains based on data
-	x.domain([0, 3000]);
+	x.domain([0, 0.1]);
 	y.domain(data.map(function(d) { return d.country; }));
     z.domain(data.map(function(d) { return d.country; })); 
         
@@ -147,15 +148,15 @@ d3.csv("totalPersonnel.csv",function (error, data) {
     .attr("fill", function(d) {return z(d.data.country); })
         .attr("fill-opacity",0.7)
       .on("mouseover", function(d) {
-          tooltipPOP.transition()
+          tooltip.transition()
                .duration(200)
                .style("opacity", .9);
-          tooltipPOP.html(d.data.country + ":" + "<br/>" +d.data.number + "K")
+          tooltip.html(d.data.country + ":" + "<br/>" +d.data.ratio + "%" )
                .style("left", (d3.event.pageX + 5) + "px")
                .style("top", (d3.event.pageY - 28) + "px");
       })
       .on("mouseout", function(d) {
-          tooltipPOP.transition()
+          tooltip.transition()
                .duration(500)
                .style("opacity", 0);
       });
@@ -188,13 +189,13 @@ var title = chart1.append("g")
 			 .attr("y", 0)
 			.attr("text-anchor", "middle")
 			.style("font-size", "18px")
-			.text("Active Personnel of China and U.S.");
+			.text("Defense budget accounts for GDP");
 
-var margin = {top: 20, right: 20, bottom: 20, left: 40},
-    width = 650 - margin.left - margin.right,
+var margin = {top: 20, right: 20, bottom: 20, left: 100},
+    width = 750 - margin.left - margin.right,
     height = 200 - margin.top - margin.bottom;
     
-var chart2 = d3.select("svg").append("g").attr("class","chart2")
+var chart2 = d3.select(".chartzone").append("g").attr("class","chart2")
 .attr("transform", "translate(" + margin.left + "," + (margin.top+300) + ")");
 
 var y2 = d3.scaleBand()			// x = d3.scaleBand()	
@@ -209,7 +210,7 @@ var z2 = d3.scaleOrdinal()
 
   var stack = d3.stack();
 
-  d3.csv("detailedPersonnel17.csv", function(error, data) {
+  d3.csv("budget.csv", function(error, data) {
     if (error) throw error;
 
     var data_nest = d3.nest()
@@ -223,7 +224,7 @@ var z2 = d3.scaleOrdinal()
     var cat = ["US","China"];
 
     y2.domain(data.map(function(d) { return d.kind; }));
-    x2.domain([0, 2000]).nice();
+    x2.domain([0, 30000]).nice();
     z2.domain(cat); 
 
     chart2.selectAll(".serie")
@@ -244,7 +245,7 @@ var z2 = d3.scaleOrdinal()
           tooltip2.transition()
                .duration(200)
                .style("opacity", .9);
-          tooltip2.html(d.data.kind + "<br/>" + "US:" + d.data.US + " K" + "<br/>" + "China:" +d.data.China + " K" )
+          tooltip2.html(d.data.kind + "<br/>" + "US:" + d.data.US + " billion dollors" + "<br/>" + "China:" +d.data.China + " billion dollors" )
                .style("left", (d3.event.pageX + 5) + "px")
                .style("top", (d3.event.pageY - 28) + "px");
       })
@@ -299,17 +300,17 @@ var z2 = d3.scaleOrdinal()
 			 .attr("y", 0)
 			.attr("text-anchor", "middle")
 			.style("font-size", "18px")
-			.text("Specific Personnel of China and U.S.");
+			.text("Defense budget and GDP of US and China");
     
   });
     
-     var myData = ['2011', '2013', '2014', '2015', '2017'];
+ var myData = ['2011', '2013', '2014', '2015', '2017'];
 
 var linearScale = d3.scaleLinear()
 	.domain([0, 4])
 	.range([0, 600]);
 
-var timeline = d3.select('svg').append('g').attr("class","timeline").attr("transform", "translate(25,580)");
+var timeline = d3.select('.chartzone').append('g').attr("class","timeline").attr("transform", "translate(25,400)");
       
 	d3.select(".timeline").selectAll('text')
 	.data(myData)
@@ -321,7 +322,8 @@ var timeline = d3.select('svg').append('g').attr("class","timeline").attr("trans
 	.text(function(d) {
 		return d;
 	})
-	.style('fill', "black");
- 
+	.style('fill', "black")
+    .style("font-size", "14px");
+    
 
 </script>

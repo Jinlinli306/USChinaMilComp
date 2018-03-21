@@ -3,14 +3,16 @@ body{
     margin-right:100px;
     font-weight: 200;
   font-size: 18px;
-    font-family: 'Open Sans', sans-serif;
+    text-align: center;
 }
 
 #footer{
-    background-color: #f9f9f9;
-    left: 14px;
-    font-size: 14px;
+   width: 1200px;
+    font-size: 15px;
     font-family: 'Open Sans', sans-serif;
+      padding:0px 10px 10px 10px; 
+    background:#dddddd;
+    border-radius:25px;
 }
 
 
@@ -27,3 +29,67 @@ body{
     width: 200px
 }
 
+.legend {
+				font-family: 'Raleway', sans-serif;
+				fill: #333333;
+			}
+			
+.tooltip {
+				fill: #333333;
+			}
+.radarChart{font-family: 'Open Sans', sans-serif;
+    text-shadow: 0 1px 0 #fff, 1px 0 0 #fff, -1px 0 0 #fff, 0 -1px 0 #fff;
+				cursor: default;
+}
+
+
+.axis .domain {
+  display: none;
+}
+input {
+    position: absolute;
+    left: 380px;
+    top: 680px;
+    width: 620px;
+  }
+  
+.tooltipPOP {
+  position: absolute;
+  text-align: center;
+  width: 65px;
+  height: 30px;
+  padding: 2px;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 12px;
+  border: 0px;
+  border-radius: 8px;
+  pointer-events: none;
+    background: #eee;
+    box-shadow: 0 0 5px #999999;                                
+    color: #333;
+    z-index: 10;
+}
+    
+.tooltip2 {
+  position: absolute;
+  text-align: center;
+  width: 80px;
+  height: 45px;
+  padding: 2px;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 12px;
+  border: 0px;
+  border-radius: 8px;
+  pointer-events: none;
+    background: #eee;
+    box-shadow: 0 0 5px #999999;                                
+    color: #333;
+    z-index: 10;
+
+}
+    
+.axis path, .axis--x line {
+    display: none;
+  }
+.chart1{font-size: 14px;}
+.chart2{font-size: 14px;}

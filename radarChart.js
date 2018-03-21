@@ -19,7 +19,7 @@ function RadarChart(id, data, options) {
 	 opacityCircles: 0.1, 	//The opacity of the circles of each blob
 	 strokeWidth: 2, 		//The width of the stroke around each blob
 	 roundStrokes: false,	//If true the area and stroke will follow a round path (cardinal-closed)
-	 color: d3.scale.category10()	//Color function
+	 color: d3.scaleCategory10	//Color function
 	};
 	
 	//Put all of the options into a variable called cfg
@@ -35,11 +35,11 @@ function RadarChart(id, data, options) {
 	var allAxis = (data[0].map(function(i, j){return i.axis})),	//Names of each axis
 		total = allAxis.length,					//The number of different axes
 		radius = Math.min(400/2, 400/2), 	//Radius of the outermost circle
-		Format = d3.format('%'),			 	//Percentage formatting
+		Format = d3.format('.2%'),			 	//Percentage formatting
 		angleSlice = Math.PI * 2 / total;		//The width in radians of each "slice"
 	
 	//Scale for the radius
-	var rScale = d3.scale.linear()
+	var rScale = d3.scaleLinear()
 		.range([0, radius])
 		.domain([0, maxValue]);
 		
@@ -59,7 +59,7 @@ function RadarChart(id, data, options) {
 	var g = svg.append("g")
     .attr("class", "gelement")
 //			.attr("transform", "translate(" + (cfg.w/2 + cfg.margin.left) + "," + (cfg.h/2 + cfg.margin.top) + ")")
-    .attr("transform", "translate(500,300)");
+    .attr("transform", "translate(600,300)");
 	
 	/////////////////////////////////////////////////////////
 	////////// Glow filter for some extra pizzazz ///////////
@@ -126,36 +126,37 @@ function RadarChart(id, data, options) {
 	//Append the labels at each axis
 	axis.append("text")
 		.attr("class", "legend")
-		.style("font-size", "11px")
+		.style("font-size", "18px")
 		.attr("text-anchor", "middle")
 		.attr("dy", "0.35em")
 		.attr("x", function(d, i){ return rScale(maxValue * cfg.labelFactor) * Math.cos(angleSlice*i - Math.PI/2); })
-		.attr("y", function(d, i){ return rScale(maxValue * cfg.labelFactor) * Math.sin(angleSlice*i - Math.PI/2); })
+		.attr("y", function(d, i){ return rScale(maxValue * cfg.labelFactor) * Math.sin(angleSlice*i - Math.PI/2)-25; })
 		.text(function(d){return d})
 		.call(wrap, cfg.wrapWidth)
-    .on("mouseover", function(d) {
-                d3.select(this)
-                    .transition()
-                    .style("font-size", "22px")
-                    .style("fill", "red");})                  
-                .on("mouseout", function(d) {
-                d3.select(this)
-                    .transition()
-                    .style("font-size", "18px")
-                    .style("fill", "#242424");});
+//    .on("mouseover", function(d) {
+//                d3.select(this)
+//                    .transition()
+//                    .style("font-size", "22px")
+//                    .style("fill", "red");})                  
+//                .on("mouseout", function(d) {
+//                d3.select(this)
+//                    .transition()
+//                    .style("font-size", "18px")
+//                    .style("fill", "#242424");})
+    ;
 
 	/////////////////////////////////////////////////////////
 	///////////// Draw the radar chart blobs ////////////////
 	/////////////////////////////////////////////////////////
 	
 	//The radial line function
-	var radarLine = d3.svg.line.radial()
-		.interpolate("linear-closed")
+	var radarLine = d3.lineRadial()
+		 .curve(d3.curveLinearClosed)
 		.radius(function(d) { return rScale(d.value); })
 		.angle(function(d,i) {	return i*angleSlice; });
 		
 	if(cfg.roundStrokes) {
-		radarLine.interpolate("cardinal-closed");
+		radarLine.curve(d3.curveCardinalClosed);
 	}
 				
 	//Create a wrapper for the blobs	
@@ -198,14 +199,19 @@ function RadarChart(id, data, options) {
 		.style("filter" , "url(#glow)");		
 	
 	//Append the circles
+    var local = d3.local();
 	blobWrapper.selectAll(".radarCircle")
-		.data(function(d,i) { return d; })
+		//.data(function(d,i) { return d; })
+        .data(function(d, i) {
+    local.set(this, i)
+    return d;
+  })
 		.enter().append("circle")
 		.attr("class", "radarCircle")
 		.attr("r", cfg.dotRadius)
 		.attr("cx", function(d,i){ return rScale(d.value) * Math.cos(angleSlice*i - Math.PI/2); })
 		.attr("cy", function(d,i){ return rScale(d.value) * Math.sin(angleSlice*i - Math.PI/2); })
-		.style("fill", function(d,i,j) { return cfg.color(j); })
+		.style("fill", function(d,i,j){return cfg.color(local.get(this))})
 		.style("fill-opacity", 0.8);
 
 	/////////////////////////////////////////////////////////
@@ -249,7 +255,48 @@ function RadarChart(id, data, options) {
 		.attr("class", "tooltip")
 		.style("opacity", 0);
 	
-	/////////////////////////////////////////////////////////
+	
+    //////////////////////////legend//////////////////////
+    let legendZone = svg.append('g');
+		let names = ['USA','China'];
+    console.log(names)
+		if (cfg.legend.title) {
+			let title = legendZone.append("text")
+				.attr("class", "title")
+				.attr('transform', `translate(${cfg.legend.translateX},${cfg.legend.translateY})`)
+				.attr("x", cfg.w - 70)
+				.attr("y", 20)
+				.attr("font-size", "16px")
+				.attr("fill", "#404040")
+				.text(cfg.legend.title);
+		}
+		let legend = legendZone.append("g")
+			.attr("class", "legend")
+			.attr("height", 100)
+			.attr("width", 200)
+			.attr('transform', `translate(${cfg.legend.translateX},${cfg.legend.translateY + 20})`);
+		// Create rectangles markers
+		legend.selectAll('rect')
+		  .data(names)
+		  .enter()
+		  .append("rect")
+		  .attr("x", cfg.w - 65)
+		  .attr("y", (d,i) => i * 20+30)
+		  .attr("width", 15)
+		  .attr("height", 15)
+		  .style("fill", (d,i) => cfg.color(i));
+		// Create labels
+		legend.selectAll('text')
+		  .data(names)
+		  .enter()
+		  .append("text")
+		  .attr("x", cfg.w - 45)
+		  .attr("y", (d,i) => i * 20 + 43)
+		  .attr("font-size", "14px")
+		  .attr("fill", "#737373")
+		  .text(d => d);
+    
+    /////////////////////////////////////////////////////////
 	/////////////////// Helper Function /////////////////////
 	/////////////////////////////////////////////////////////
 
