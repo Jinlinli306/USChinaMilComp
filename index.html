@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html> 
+    
+  <head>
+    <meta charset="utf-8">
+    <title>US vs China: A Military Comparison</title>
+    <!-- CSS Stylesheet -->
+    <link rel="stylesheet" type="text/css" href="index.css">  
+    <!-- D3.js Source -->
+    <script type= "text/javascript" src="https://d3js.org/d3.v4.min.js"></script>
+      <script src="https://d3js.org/d3-scale-chromatic.v1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3-queue/3.0.4/d3-queue.min.js"></script>
+  </head>
+    
+  <body>
+      
+        <h1 style = "text-align:center;"><bold>US vs China: A Military Comparison</bold></h1>
+          <div style = "text-align:left;">
+          <p>
+          The “rise” of China is based on her rapid and sustained economic growth, which includes an upgrade of China’s military power. China is not a military superpower like the United States, but after decades of increasing its military budget and deploying modern weapons systems, China can now challenge the accustomed status quo of America dictating the strategic agenda in the Asia Pacific region.
+          </p>
+      </div>
+      <div class="radarChart" ></div>
+      <form class="sliderbar" id="sliderequ">
+        <label style="position: absolute;
+    left: 380px;
+    top: 660px;"for="year">Please select a year: </label>
+        <input style="width:300px"type="range" min=2011 max=2017 step=1 id="year" value=2011 oninput="selected_year.value = year.value">
+        <output style="position: absolute;
+    left: 690px;
+    top: 685px;"name="selected_year" id="selected_year">2011</output>
+    </form>
+      <input class="sliderbar"id= "sliderPOP" type="range" min="0" max="100" step="25" value="0">
+      <input class="sliderbar"id= "sliderFin" type="range" min="0" max="100" step="25" value="0">
+      
+      <div id = "footer"  align="center">
+      <p style = "text-align:center;">
+          <br>
+          <a href="https://github.com/Jinlinli306/USChinaMilComp/">Github Link</a> 
+          <br>
+          Created by Diyang Gong(digong@ucsc.edu), Jinlin Li(jli306@ucsc.edu), Yingjie Hu(yhu132@ucsc.edu) in collaboration with Suresh K Lodha
+          <br> 
+           Designed for CMPS263 Data Visualization, 2018 winter
+          </p>
+          <table>
+              <tbody>
+                  <tr id = "header">
+                  <td class = "firstcolumn">Files Submitted:</td>
+                  <td class = "secondcolumn">Data Sources:</td>
+                  <td class = "thirdcolumn">Relevant Visualization Sources:</td>
+                  <td class = "lastcolumn">Code Sources:</td>
+                  </tr>
+                  
+                  <tr> 
+                  <td class = "firstcolumn"></td>
+                <td class = "secondcolumn"></td>
+                      <td class = "thirdcolumn"></td>
+                      <td class = "lastcolumn"></td>
+                  </tr>
+                  
+                  <tr>
+                  <td class = "firstcolumn"></td>
+                <td class = "secondcolumn"></td>
+                      <td class = "thirdcolumn"></td>
+                      <td class = "lastcolumn"></td>
+                  </tr>
+                  
+                  <tr>
+                  <td class = "firstcolumn"></td>
+                <td class = "secondcolumn"></td>
+                      <td class = "thirdcolumn"></td>
+                      <td class = "lastcolumn"></td>
+                  </tr>
+                  
+                  <tr>
+    <td class = "firstcolumn">index.html</td>
+    <td class="secondcolumn"><a href = "http://www.businessinsider.com/chinese-us-military-comparison-2016-8">Chinese military compared to US armed forces - Business Insider</a></td>
+    <td class="thirdcolumn"><a href = "https://www.rand.org/paf/projects/us-china-scorecard.html"> An Interactive Look at the U.S.-China Military Scorecard | RAND</a> </td>
+    <td class="lastcolumn"><a href = "https://www.visualcinnamon.com/2013/09/making-d3-radar-chart-look-bit-better.html"> Radar Chart</a></td>
+  </tr>
+                  
+                   <tr>
+    <td class = "firstcolumn">index.css</td>
+    <td class="secondcolumn"><a href = "https://www.globalfirepower.com/countries-comparison-detail.asp?form=form&country1=china&country2=united-states-of-america&Submit=COMPARE">Comparisons of World Military Strengths - Global Firepower</a></td>
+    <td class="thirdcolumn"><a href = "http://armedforces.eu/compare/country_USA_vs_China"> USA vs China | Comparison military strength - ArmedForces.eu</a> </td>
+    <td class="lastcolumn"><a href = "https://bl.ocks.org/reinson/166bae46dd106b45cf2d77c7802768ca"> Stacked Barchart</a></td>
+                       
+  </tr>
+                  
+                  <tr>
+    <td class = "firstcolumn">air+year.csv</td>
+    <td class="secondcolumn"><a href = "https://en.wikipedia.org/wiki/Comparison_of_US_and_Chinese_Military_Armed_Forces">Comparison of US and Chinese Military Armed Forces - Wikipedia</a></td>
+    <td class="thirdcolumn"><a href = "http://www.visualcapitalist.com/balance-of-superpowers-comparing-the-us-and-chinese-armed-forces/"> Balance of Superpowers: Comparing the US and Chinese Armed Forces</a> </td>
+    <td class="lastcolumn"><a href = "https://bl.ocks.org/HarryStevens/54d01f118bc8d1f2c4ccd98235f33848"> Bubble Chart</a></td>
+  </tr>
+                  
+                  <tr>
+    <td class = "firstcolumn">army+year.csv</td>  
+    <td class="secondcolumn"><a href = "http://www.nationmaster.com/country-info/compare/China/United-States/Military">Military - China vs United States Military Stats Compared</a></td>
+    <td class="thirdcolumn"></td>
+    <td class="lastcolumn"></td>
+  </tr>
+                  
+                  <tr>
+    <td class = "firstcolumn">naval+year.csv</td>  
+    <td class="secondcolumn"></td>
+    <td class="thirdcolumn"></td>
+    <td class="lastcolumn"></td>
+  </tr>
+                  
+                 <tr>
+    <td class = "firstcolumn">budget.csv</td>  
+    <td class="secondcolumn"></td>
+    <td class="thirdcolumn"></td>
+    <td class="lastcolumn"></td>
+  </tr>
+                  
+                 <tr>
+    <td class = "firstcolumn">budgetRatio.csv</td>  
+    <td class="secondcolumn"></td>
+    <td class="thirdcolumn"></td>
+    <td class="lastcolumn"></td>
+  </tr>
+                 
+                  <tr>
+    <td class = "firstcolumn">detailedPersonnel17.csv</td>  
+    <td class="secondcolumn"></td>
+    <td class="thirdcolumn"></td>
+    <td class="lastcolumn"></td>
+  </tr>
+                  
+                         <tr>
+    <td class = "firstcolumn">main.js</td>  
+    <td class="secondcolumn"></td>
+    <td class="thirdcolumn"></td>
+    <td class="lastcolumn"></td>
+  </tr>
+                  
+                         <tr>
+    <td class = "firstcolumn">radarChart.js</td>  
+    <td class="secondcolumn"></td>
+    <td class="thirdcolumn"></td>
+    <td class="lastcolumn"></td>
+  </tr>
+                  
+                         <tr>
+    <td class = "firstcolumn">totalPersonnel.csv</td>  
+    <td class="secondcolumn"></td>
+    <td class="thirdcolumn"></td>
+    <td class="lastcolumn"></td>
+  </tr>
+              </tbody>
+          </table>
+      </div>
+      <script src="radarChart.js"></script>
+      <script src="main.js"></script>
+  </body>
+    
+</html>
