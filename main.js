@@ -295,7 +295,7 @@ d3.csv("budgetRatio.csv",function (error, data) {
           tooltipFin.transition()
                .duration(200)
                .style("opacity", .9);
-          tooltipFin.html(d.data.country + ":" + "<br/>" +d.data.ratio + "%" )
+          tooltipFin.html(d.data.country + ":" + "<br/>" +d.data.ratio )
                .style("left", (d3.event.pageX + 5) + "px")
                .style("top", (d3.event.pageY - 28) + "px");
       })
@@ -335,7 +335,7 @@ var title = chart1.append("g")
 			.style("font-size", "18px")
 			.text("Defense budget accounts for GDP");
 
-var margin = {top: 20, right: 20, bottom: 20, left: 40},
+var margin = {top: 20, right: 20, bottom: 20, left: 60},
     width = 650 - margin.left - margin.right,
     height = 200 - margin.top - margin.bottom;
     

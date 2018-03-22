@@ -51,7 +51,19 @@ input {
     top: 680px;
     width: 620px;
   }
-  
+
+#sliderPOP{
+    position: absolute;
+    left: 153px;
+    top: 700px;
+    width: 620px;
+}
+#sliderFin{
+    position: absolute;
+    left: 153px;
+    top: 700px;
+    width: 620px;
+}
 .tooltipPOP {
   position: absolute;
   text-align: center;
